@@ -1,4 +1,6 @@
-﻿absl-py==2.2.2
+setuptools>=42
+wheel
+absl-py==2.2.2
 astunparse==1.6.3
 attrs==25.3.0
 blinker==1.9.0
