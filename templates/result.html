@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - PlantPedia</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #81C784;
+            --accent-color: #FF4081;
+            --text-color: #333333;
+            --light-text: #757575;
+            --light-bg: #F5F7FA;
+            --white: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a i {
+            margin-right: 6px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero section background effect for all pages */
+        .page-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        /* Main content */
+        .main-content {
+            width: 90%;
+            max-width: 1000px;
+            margin: 100px auto 40px;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Result section styles */
+        .result-container {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+        }
+        
+        .image-section {
+            flex: 1;
+            max-width: 350px;
+        }
+        
+        .details-section {
+            flex: 2;
+        }
+        
+        .result-title {
+            color: var(--primary-color);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+        }
+        
+        .prediction-heading {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .prediction-name {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .plant-image {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            max-height: 300px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .plant-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .similar-image {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .similar-image:hover {
+            transform: scale(1.03);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        tr:hover {
+            background-color: rgba(129, 199, 132, 0.1);
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .button i {
+            margin-right: 8px;
+        }
+        
+        .button:hover {
+            background-color: #1B5E20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: var(--white);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        footer p {
+            color: var(--light-text);
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 900px) {
+            .result-container {
+                flex-direction: column;
+            }
+            
+            .image-section {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                width: 95%;
+                margin: 90px auto 30px;
+            }
+            
+            .result-container {
+                padding: 20px;
+            }
+            
+            .navbar {
+                padding: 1rem 4%;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links li {
+                margin-left: 1rem;
+            }
+            
+            .nav-links a span {
+                display: none;
+            }
+            
+            .nav-links a i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .result-container {
+                padding: 15px;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="page-background"></div>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span class="logo-text">PlantPedia</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="result-container">
+            <div class="image-section">
+                <img class="plant-image" src="{{ input_image_path }}" alt="Uploaded Plant Image">
+                
+                {% for item in data %}
+                    {% for key, value in item.items() %}
+                        {% if key == "image_path" %}
+                            <img class="similar-image" src="{{ value }}" alt="Similar Plant Image">
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                
+                <a href="/" class="button">
+                    <i class="fas fa-upload"></i> Upload Another Image
+                </a>
+            </div>
+            
+            <div class="details-section">
+                <h2 class="result-title">Prediction Result</h2>
+                <h3 class="prediction-heading">Identified Plant: <span class="prediction-name">{{ class_name }}</span></h3>
+                
+                {% if data %}
+                    <h3>Plant Details</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in data %}
+                                {% for key, value in item.items() %}
+                                    {% if key != "image_path" %}
+                                        <tr>
+                                            <td>{{ key }}</td>
+                                            <td>{{ value }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No additional information is available for this plant.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 PlantPedia. All rights reserved.</p>
+    </footer>
+</body>
+</html>

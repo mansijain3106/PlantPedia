@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlantPedia - Identify Plants</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #81C784;
+            --accent-color: #FF4081;
+            --text-color: #333333;
+            --light-text: #757575;
+            --light-bg: #F5F7FA;
+            --white: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a i {
+            margin-right: 6px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .active {
+            color: var(--primary-color) !important;
+            font-weight: 600;
+        }
+
+        /* Hero section styles */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Upload form styles */
+        .upload-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .upload-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--secondary-color);
+            border-radius: 8px;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(129, 199, 132, 0.1);
+        }
+        
+        .file-upload i {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        .file-upload p {
+            color: var(--light-text);
+            margin-bottom: 10px;
+        }
+        
+        .file-upload span {
+            font-size: 0.875rem;
+            color: var(--light-text);
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .submit-btn i {
+            margin-right: 8px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1B5E20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: var(--white);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            margin-top: auto;
+        }
+        
+        footer p {
+            color: var(--light-text);
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .upload-container {
+                padding: 1.5rem;
+            }
+            
+            .navbar {
+                padding: 1rem 4%;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links li {
+                margin-left: 1rem;
+            }
+            
+            .nav-links a span {
+                display: none;
+            }
+            
+            .nav-links a i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .file-upload {
+                padding: 20px 15px;
+            }
+            
+            .file-upload i {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span class="logo-text">PlantPedia</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="/" class="active">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover the World of Plants</h1>
+            <p>Upload a photo and identify plants instantly with our AI-powered tool</p>
+            
+            <!-- Upload Form Container -->
+            <div class="upload-container">
+                <h2>Upload Plant Image</h2>
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <label for="image-upload" class="file-upload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop your image or click to browse</p>
+                        <span>Supported formats: JPG, PNG, JPEG</span>
+                        <input type="file" id="image-upload" name="image" accept="image/*" required>
+                    </label>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-search"></i>
+                        Upload & Predict
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 PlantPedia. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for file upload interaction -->
+    <script>
+        const fileUpload = document.getElementById('image-upload');
+        const uploadLabel = document.querySelector('.file-upload');
+        
+        // Show filename when file is selected
+        fileUpload.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                uploadLabel.querySelector('p').textContent = fileName;
+                uploadLabel.querySelector('span').textContent = 'File selected';
+                uploadLabel.style.borderColor = '#2E7D32';
+            }
+        });
+    </script>
+</body>
+</html>
